@@ -1,3 +1,5 @@
+//page for generating flashcards and saving them
+
 "use client";
 
 import { useState } from "react";
