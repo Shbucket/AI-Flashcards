@@ -49,7 +49,7 @@ export default function Home() {
               <Button color="inherit" href="/sign-in">
                 Login
               </Button>
-              <Button color="inherit" href="/sign-up">
+              <Button color="inherit" href="/sign-in">
                 Sign Up
               </Button>
             </SignedOut>
