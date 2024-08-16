@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Head from "next/head";
-import { ClerkProvider } from "@clerk/clerk-react";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const handleSubmit = async () => {
   const checkoutSession = await fetch("/api/checkout_sessions", {
@@ -29,36 +30,64 @@ const handleSubmit = async () => {
     console.warn(error.message);
   }
 };
-export default function Home() {
-  return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    >
-      <Container maxWidth="100vw">
-        <Head>
-          <title>Flashcard Saas</title>
-          <meta name="description" content="Create flashcard from your test" />
-        </Head>
 
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
-              Flashcard SaaS
-            </Typography>
-            <SignedOut>
-              <Button color="inherit" href="/sign-in">
-                Login
-              </Button>
-              <Button color="inherit" href="/sign-in">
-                Sign Up
-              </Button>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </Toolbar>
-        </AppBar>
-      </Container>
+export default function Home() {
+  const { user } = useUser();
+  const router = useRouter();
+
+  const handleGetStarted = async () => {
+    if (user) {
+      try {
+        const response = await fetch("/api/createUserDocument/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id }),
+        });
+
+        if (response.ok) {
+          // Redirect the user to the next screen only if the document creation or verification is successful
+          router.push("/generate"); // Change this to your desired path
+        } else {
+          console.error("Failed to create or verify user document");
+          alert("Failed to create or verify your account. Please try again later.");
+        }
+      } catch (error) {
+        console.error("Error in handleGetStarted:", error);
+        alert("An error occurred. Please try again later.");
+      }
+    } else {
+      console.error("No user found");
+      alert("You must be logged in to proceed. Please sign in.");
+      // Optionally redirect to login
+      router.push("/sign-in");
+    }
+  };
+
+  return (
+    <Container maxWidth="100vw">
+      <Head>
+        <title>Flashcard Saas</title>
+        <meta name="description" content="Create flashcard from your test" />
+      </Head>
+
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Flashcard SaaS
+          </Typography>
+          <SignedOut>
+            <Button color="inherit" href="/sign-in">
+              Login
+            </Button>
+            <Button color="inherit" href="/sign-in">
+              Sign Up
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </Toolbar>
+      </AppBar>
 
       <Box sx={{ textAlign: "center", my: 4 }}>
         <Typography variant="h2" component="h1" gutterBottom>
@@ -71,7 +100,7 @@ export default function Home() {
           variant="contained"
           color="primary"
           sx={{ mt: 2, mr: 2 }}
-          href="/generate"
+          onClick={handleGetStarted}
         >
           Get Started
         </Button>
@@ -97,6 +126,6 @@ export default function Home() {
           {/* Pricing plans */}
         </Grid>
       </Box>
-    </ClerkProvider>
+    </Container>
   );
 }

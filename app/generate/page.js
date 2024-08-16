@@ -18,8 +18,17 @@ import {
   DialogTitle,
   DialogContentText
 } from "@mui/material";
-
+import { useUser } from "@clerk/nextjs";
+import {
+  setDoc,
+  collection,
+  doc,
+  writeBatch,
+  getDoc,
+} from "firebase/firestore"
+import { db } from "@/firebase";
 export default function Generate() {
+  const {user} = useUser();
   const [text, setText] = useState("");
   const [flashcards, setFlashcards] = useState([]);
   const [setName, setSetName] = useState("");
@@ -30,7 +39,7 @@ export default function Generate() {
 
   const handleSubmit = async () => {
     if (!text.trim()) {
-      alert("Please enter some text to generate flashcards."); //checks if text is empty and will alert if it is
+      alert("Please enter some text to generate flashcards.");
       return;
     }
 
@@ -45,10 +54,19 @@ export default function Generate() {
       }
 
       const data = await response.json();
-      setFlashcards(data); //updates the flashcards with the generated data
+      setFlashcards(data);
     } catch (error) {
       console.error("Error generating flashcards:", error);
       alert("An error occurred while generating flashcards. Please try again.");
+    }
+  };
+
+  const createUserDocument = async (userId) => {
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      await setDoc(userDocRef, { flashcardSets: [] });
     }
   };
 
@@ -57,9 +75,23 @@ export default function Generate() {
       alert("Please enter a name for your flashcard set.");
       return;
     }
+    if (!user) {
+      alert("You must be logged in to save flashcards.");
+      return;
+    }
+
+    const userId = user.id;
 
     try {
-      const userDocRef = doc(collection(db, "users"), user.id);
+      // Ensure the user document exists
+      await createUserDocument(userId);
+
+      // Create a document in the flashcardSets collection
+      const setDocRef = doc(db, "flashcardSets", setName);
+      await setDoc(setDocRef, { flashcards, userId });
+
+      // Update user document with the new flashcard set
+      const userDocRef = doc(db, "users", userId);
       const userDocSnap = await getDoc(userDocRef);
 
       const batch = writeBatch(db);
@@ -74,9 +106,6 @@ export default function Generate() {
       } else {
         batch.set(userDocRef, { flashcardSets: [{ name: setName }] });
       }
-
-      const setDocRef = doc(collection(userDocRef, "flashcardSets"), setName);
-      batch.set(setDocRef, { flashcards });
 
       await batch.commit();
 

@@ -18,7 +18,7 @@ import {
 import Link from "next/link";
 
 export default function SignUpPage() {
-  return (<ClerkProvider>
+  return (
     <Container>
       <AppBar position="static" sx={{ backgroundColor: "#3f51b5" }}>
         <Toolbar>
@@ -51,6 +51,5 @@ export default function SignUpPage() {
         </SignedIn>
       </Box>
     </Container>
- </ClerkProvider>
   );
 }
