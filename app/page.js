@@ -32,7 +32,9 @@ export default function Home() {
           router.push("/generate");
         } else {
           console.error("Failed to create or verify user document");
-          alert("Failed to create or verify your account. Please try again later.");
+          alert(
+            "Failed to create or verify your account. Please try again later."
+          );
         }
       } catch (error) {
         console.error("Error in handleGetStarted:", error);
@@ -57,29 +59,31 @@ export default function Home() {
       </Head>
 
       <AppBar position="static">
-      <Toolbar>
-        <Box sx={{ flexGrow: 1 }}>
-          <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h6">
-              Flashcard SaaS
-            </Typography>
-          </Link>
-        </Box>
-        <Box>
-          <SignedOut>
-            <Button color="inherit" href="/sign-in">
-              Login
-            </Button>
-            <Button color="inherit" href="/sign-in">
-              Sign Up
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        <Toolbar>
+          <Box sx={{ flexGrow: 1 }}>
+            <Link
+              href="/"
+              passHref
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography variant="h6">Flashcard SaaS</Typography>
+            </Link>
+          </Box>
+          <Box>
+            <SignedOut>
+              <Button color="inherit" href="/sign-in">
+                Login
+              </Button>
+              <Button color="inherit" href="/sign-in">
+                Sign Up
+              </Button>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
       <Box sx={{ textAlign: "center", my: 4 }}>
         <Typography variant="h2" component="h1" gutterBottom>
@@ -114,43 +118,45 @@ export default function Home() {
       {!user && (
         <>
           <Box sx={{ my: 6 }}>
-  <Typography variant="h4" component="h2" gutterBottom>
-    Features
-  </Typography>
-  <Grid container spacing={4}>
-    {/* Feature items */}
-    <Grid item xs={12} md={4}>
-      <Typography variant="h6" component="h3" gutterBottom>
-        Generative AI Flashcards
-      </Typography>
-      <Typography>
-        Automatically generate flashcards based on any topic you provide. 
-        This feature uses Llama 3.1 to understand your input and create meaningful flashcards.
-      </Typography>
-    </Grid>
+            <Typography variant="h4" component="h2" gutterBottom>
+              Features
+            </Typography>
+            <Grid container spacing={4}>
+              {/* Feature items */}
+              <Grid item xs={12} md={4}>
+                <Typography variant="h6" component="h3" gutterBottom>
+                  Generative AI Flashcards
+                </Typography>
+                <Typography>
+                  Automatically generate flashcards based on any topic you
+                  provide. This feature uses Llama 3.1 to understand your input
+                  and create meaningful flashcards.
+                </Typography>
+              </Grid>
 
-    <Grid item xs={12} md={4}>
-      <Typography variant="h6" component="h3" gutterBottom>
-        Create 10 Flashcards per Topic
-      </Typography>
-      <Typography>
-        Once you provide a topic, the AI will generate 10 high-quality flashcards that you can use 
-        to study and master the subject matter more efficiently.
-      </Typography>
-    </Grid>
+              <Grid item xs={12} md={4}>
+                <Typography variant="h6" component="h3" gutterBottom>
+                  Create 10 Flashcards per Topic
+                </Typography>
+                <Typography>
+                  Once you provide a topic, the AI will generate 10 high-quality
+                  flashcards that you can use to study and master the subject
+                  matter more efficiently.
+                </Typography>
+              </Grid>
 
-    <Grid item xs={12} md={4}>
-      <Typography variant="h6" component="h3" gutterBottom>
-        Powered by Llama 3.1
-      </Typography>
-      <Typography>
-        Our system is built using the latest Llama 3.1 AI model, ensuring that the flashcards are accurate 
-        and provide detailed information for in-depth learning.
-      </Typography>
-    </Grid>
-  </Grid>
-</Box>
-
+              <Grid item xs={12} md={4}>
+                <Typography variant="h6" component="h3" gutterBottom>
+                  Powered by Llama 3.1
+                </Typography>
+                <Typography>
+                  Our system is built using the latest Llama 3.1 AI model,
+                  ensuring that the flashcards are accurate and provide detailed
+                  information for in-depth learning.
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
         </>
       )}
     </Container>

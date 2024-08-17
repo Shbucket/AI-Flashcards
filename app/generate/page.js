@@ -18,21 +18,21 @@ import {
   AppBar,
   Toolbar,
   DialogTitle,
-  DialogContentText
+  DialogContentText,
 } from "@mui/material";
-import { SignedIn, SignedOut, UserButton, useUser  } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import {
   setDoc,
   collection,
   doc,
   writeBatch,
   getDoc,
-} from "firebase/firestore"
+} from "firebase/firestore";
 import { db } from "@/firebase";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function Generate() {
-  const {user} = useUser();
+  const { user } = useUser();
   const [text, setText] = useState("");
   const [flashcards, setFlashcards] = useState([]);
   const [setName, setSetName] = useState("");
@@ -75,7 +75,6 @@ export default function Generate() {
   };
 
   const saveFlashcards = async () => {
-    
     if (!setName.trim()) {
       alert("Please enter a name for your flashcard set.");
       return;
@@ -116,7 +115,7 @@ export default function Generate() {
 
       alert("Flashcards saved successfully!");
       handleCloseDialog();
-      router.push('/flashcards');
+      router.push("/flashcards");
       setSetName("");
     } catch (error) {
       console.error("Error saving flashcards:", error);
@@ -128,24 +127,28 @@ export default function Generate() {
     <Container maxWidth="md">
       <AppBar position="static">
         <Toolbar>
-        <Box sx={{ flexGrow: 1 }}>
-          <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h6">
-              Flashcard SaaS
-            </Typography>
-          </Link>
-        </Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <Link
+              href="/"
+              passHref
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography variant="h6">Flashcard SaaS</Typography>
+            </Link>
+          </Box>
           <SignedOut>
-            <Button color="inherit" href="/sign-in">Login</Button>
-            <Button color="inherit" href="/sign-in">Sign Up</Button>
+            <Button color="inherit" href="/sign-in">
+              Login
+            </Button>
+            <Button color="inherit" href="/sign-in">
+              Sign Up
+            </Button>
           </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>
         </Toolbar>
       </AppBar>
-
-
 
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -207,29 +210,29 @@ export default function Generate() {
         </Box>
       )}
 
-<Dialog open={dialogOpen} onClose={handleCloseDialog}>
-  <DialogTitle>Save Flashcard Set</DialogTitle>
-  <DialogContent>
-    <DialogContentText>
-      Please enter a name for your flashcard set.
-    </DialogContentText>
-    <TextField
-      autoFocus
-      margin="dense"
-      label="Set Name"
-      type="text"
-      fullWidth
-      value={setName}
-      onChange={(e) => setSetName(e.target.value)}
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCloseDialog}>Cancel</Button>
-    <Button onClick={saveFlashcards} color="primary">
-      Save
-    </Button>
-  </DialogActions>
-</Dialog>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>Save Flashcard Set</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter a name for your flashcard set.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Set Name"
+            type="text"
+            fullWidth
+            value={setName}
+            onChange={(e) => setSetName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={saveFlashcards} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }

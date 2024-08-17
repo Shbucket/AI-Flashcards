@@ -46,12 +46,14 @@ export default function Flashcard() {
           console.log("Flashcard sets data:", flashcardSetsData);
 
           // Convert the object to an array of set names
-          const flashcardSetsArray = Object.values(flashcardSetsData).map(set => set.name);
+          const flashcardSetsArray = Object.values(flashcardSetsData).map(
+            (set) => set.name
+          );
           console.log("Flashcard sets names:", flashcardSetsArray);
 
           setFlashcardSets(flashcardSetsArray); // Update state with the array of set names
         } else {
-          console.log('No user document found.'); // Log if user document does not exist
+          console.log("No user document found."); // Log if user document does not exist
         }
       } catch (error) {
         console.error("Error fetching flashcard sets:", error);
@@ -84,7 +86,10 @@ export default function Flashcard() {
           if (Array.isArray(flashcardsData)) {
             setFlashcards(flashcardsData); // Update state with the flashcards
           } else {
-            console.warn("Expected flashcards field to be an array:", flashcardsData); // Warn if data is not an array
+            console.warn(
+              "Expected flashcards field to be an array:",
+              flashcardsData
+            ); // Warn if data is not an array
           }
         } else {
           console.warn("No document found for set:", selectedSet); // Warn if document does not exist
@@ -133,15 +138,21 @@ export default function Flashcard() {
       <AppBar position="static">
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
-          <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h6">
-              Flashcard SaaS
-            </Typography>
-          </Link>
-        </Box>
+            <Link
+              href="/"
+              passHref
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography variant="h6">Flashcard SaaS</Typography>
+            </Link>
+          </Box>
           <SignedOut>
-            <Button color="inherit" href="/sign-in">Login</Button>
-            <Button color="inherit" href="/sign-in">Sign Up</Button>
+            <Button color="inherit" href="/sign-in">
+              Login
+            </Button>
+            <Button color="inherit" href="/sign-in">
+              Sign Up
+            </Button>
           </SignedOut>
           <SignedIn>
             <UserButton />
@@ -151,7 +162,12 @@ export default function Flashcard() {
 
       {selectedSet ? (
         <>
-          <Button onClick={handleBackClick} variant="outlined" color="primary" sx={{ mt: 4 }}>
+          <Button
+            onClick={handleBackClick}
+            variant="outlined"
+            color="primary"
+            sx={{ mt: 4 }}
+          >
             Back to Sets
           </Button>
 
@@ -162,34 +178,36 @@ export default function Flashcard() {
                   <Card
                     onClick={() => handleCardClick(index)} // Use index as the identifier for the card
                     sx={{
-                      position: 'relative',
-                      perspective: '1000px',
-                      cursor: 'pointer',
+                      position: "relative",
+                      perspective: "1000px",
+                      cursor: "pointer",
                     }}
                   >
                     <Box
                       sx={{
-                        position: 'relative',
-                        width: '100%',
-                        height: '200px',
-                        transition: '0.6s',
-                        transformStyle: 'preserve-3d',
-                        transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)', // Rotate card based on flip state
+                        position: "relative",
+                        width: "100%",
+                        height: "200px",
+                        transition: "0.6s",
+                        transformStyle: "preserve-3d",
+                        transform: flipped[index]
+                          ? "rotateY(180deg)"
+                          : "rotateY(0deg)", // Rotate card based on flip state
                       }}
                     >
                       <Box
                         sx={{
-                          position: 'absolute',
-                          width: '100%',
-                          height: '100%',
-                          backfaceVisibility: 'hidden',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: 'white',
-                          border: '1px solid #ddd',
-                          borderRadius: '4px',
-                          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                          backfaceVisibility: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: "white",
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                          boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                         }}
                       >
                         <Typography variant="h5" component="div">
@@ -198,18 +216,18 @@ export default function Flashcard() {
                       </Box>
                       <Box
                         sx={{
-                          position: 'absolute',
-                          width: '100%',
-                          height: '100%',
-                          backfaceVisibility: 'hidden',
-                          transform: 'rotateY(180deg)', // Rotate to back side of the card
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: 'white',
-                          border: '1px solid #ddd',
-                          borderRadius: '4px',
-                          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                          backfaceVisibility: "hidden",
+                          transform: "rotateY(180deg)", // Rotate to back side of the card
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: "white",
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                          boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                         }}
                       >
                         <Typography variant="h5" component="div">
@@ -221,7 +239,10 @@ export default function Flashcard() {
                 </Grid>
               ))
             ) : (
-              <Typography variant="h6" sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+              <Typography
+                variant="h6"
+                sx={{ mt: 4, display: "flex", justifyContent: "center" }}
+              >
                 No flashcards found in this set.
               </Typography>
             )}
@@ -244,7 +265,10 @@ export default function Flashcard() {
               </Grid>
             ))
           ) : (
-            <Typography variant="h6" sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+            <Typography
+              variant="h6"
+              sx={{ mt: 4, display: "flex", justifyContent: "center" }}
+            >
               No flashcard sets found. Create a new flashcard set.
             </Typography>
           )}
