@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
-
+import Link from "next/link";
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcardSets, setFlashcardSets] = useState([]); // State for storing flashcard sets
@@ -132,16 +132,19 @@ export default function Flashcard() {
     <Container maxWidth="md">
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }} href='/generate'>
-            Flashcard SaaS
-          </Typography>
+          <Box sx={{ flexGrow: 1 }}>
+          <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography variant="h6">
+              Flashcard SaaS
+            </Typography>
+          </Link>
+        </Box>
           <SignedOut>
             <Button color="inherit" href="/sign-in">Login</Button>
             <Button color="inherit" href="/sign-in">Sign Up</Button>
           </SignedOut>
           <SignedIn>
             <UserButton />
-            <Button color="inherit" href="/generate">Create</Button>
           </SignedIn>
         </Toolbar>
       </AppBar>

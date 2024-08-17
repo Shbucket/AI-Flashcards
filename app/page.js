@@ -13,24 +13,7 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Head from "next/head";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-
-const handleSubmit = async () => {
-  const checkoutSession = await fetch("/api/checkout_sessions", {
-    method: "POST",
-    headers: { origin: "http://localhost:3000" },
-  });
-  const checkoutSessionJson = await checkoutSession.json();
-
-  const stripe = await getStripe();
-  const { error } = await stripe.redirectToCheckout({
-    sessionId: checkoutSessionJson.id,
-  });
-
-  if (error) {
-    console.warn(error.message);
-  }
-};
-
+import Link from "next/link"; // Import Link component
 export default function Home() {
   const { user } = useUser();
   const router = useRouter();
@@ -46,7 +29,7 @@ export default function Home() {
 
         if (response.ok) {
           // Redirect the user to the next screen only if the document creation or verification is successful
-          router.push("/generate"); // Change this to your desired path
+          router.push("/generate");
         } else {
           console.error("Failed to create or verify user document");
           alert("Failed to create or verify your account. Please try again later.");
@@ -62,19 +45,27 @@ export default function Home() {
       router.push("/sign-in");
     }
   };
+  const handleFlashcards = () => {
+    router.push("/flashcards");
+  };
 
   return (
     <Container maxWidth="100vw">
       <Head>
-        <title>Flashcard Saas</title>
-        <meta name="description" content="Create flashcard from your test" />
+        <title>Flashcard SaaS</title>
+        <meta name="description" content="Create flashcards from your text" />
       </Head>
 
       <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Flashcard SaaS
-          </Typography>
+      <Toolbar>
+        <Box sx={{ flexGrow: 1 }}>
+          <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography variant="h6">
+              Flashcard SaaS
+            </Typography>
+          </Link>
+        </Box>
+        <Box>
           <SignedOut>
             <Button color="inherit" href="/sign-in">
               Login
@@ -86,8 +77,9 @@ export default function Home() {
           <SignedIn>
             <UserButton />
           </SignedIn>
-        </Toolbar>
-      </AppBar>
+        </Box>
+      </Toolbar>
+    </AppBar>
 
       <Box sx={{ textAlign: "center", my: 4 }}>
         <Typography variant="h2" component="h1" gutterBottom>
@@ -96,36 +88,42 @@ export default function Home() {
         <Typography variant="h5" component="h2" gutterBottom>
           The easiest way to create flashcards from your text.
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2, mr: 2 }}
-          onClick={handleGetStarted}
-        >
-          Get Started
-        </Button>
-        <Button variant="outlined" color="primary" sx={{ mt: 2 }}>
-          Learn More
-        </Button>
+        {user && (
+          <Box sx={{ my: 4 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2, mr: 2 }}
+              onClick={handleGetStarted}
+            >
+              Generate
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{ mt: 2 }}
+              onClick={handleFlashcards}
+            >
+              Flashcards
+            </Button>
+          </Box>
+        )}
       </Box>
 
-      <Box sx={{ my: 6 }}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Features
-        </Typography>
-        <Grid container spacing={4}>
-          {/* Feature items */}
-        </Grid>
-      </Box>
+      {/* Remove the Features and Pricing sections for signed-in users */}
+      {!user && (
+        <>
+          <Box sx={{ my: 6 }}>
+            <Typography variant="h4" component="h2" gutterBottom>
+              Features
+            </Typography>
+            <Grid container spacing={4}>
+              {/* Feature items */}
+            </Grid>
+          </Box>
 
-      <Box sx={{ my: 6, textAlign: "center" }}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Pricing
-        </Typography>
-        <Grid container spacing={4} justifyContent="center">
-          {/* Pricing plans */}
-        </Grid>
-      </Box>
+        </>
+      )}
     </Container>
   );
 }
