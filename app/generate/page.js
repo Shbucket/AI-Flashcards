@@ -117,6 +117,9 @@ export default function Generate() {
       alert("An error occurred while saving flashcards. Please try again.");
     }
   };
+  const handleView = async () => {
+
+  }
 
   return (
     <Container maxWidth="md">
@@ -176,6 +179,12 @@ export default function Generate() {
             onClick={handleOpenDialog}
           >
             Save Flashcards
+          </Button>
+          <Button
+           variant="contained"
+           color="primary"
+           href="/flashcards">
+            View Flashcards
           </Button>
         </Box>
       )}
