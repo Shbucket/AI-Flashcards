@@ -114,13 +114,42 @@ export default function Home() {
       {!user && (
         <>
           <Box sx={{ my: 6 }}>
-            <Typography variant="h4" component="h2" gutterBottom>
-              Features
-            </Typography>
-            <Grid container spacing={4}>
-              {/* Feature items */}
-            </Grid>
-          </Box>
+  <Typography variant="h4" component="h2" gutterBottom>
+    Features
+  </Typography>
+  <Grid container spacing={4}>
+    {/* Feature items */}
+    <Grid item xs={12} md={4}>
+      <Typography variant="h6" component="h3" gutterBottom>
+        Generative AI Flashcards
+      </Typography>
+      <Typography>
+        Automatically generate flashcards based on any topic you provide. 
+        This feature uses Llama 3.1 to understand your input and create meaningful flashcards.
+      </Typography>
+    </Grid>
+
+    <Grid item xs={12} md={4}>
+      <Typography variant="h6" component="h3" gutterBottom>
+        Create 10 Flashcards per Topic
+      </Typography>
+      <Typography>
+        Once you provide a topic, the AI will generate 10 high-quality flashcards that you can use 
+        to study and master the subject matter more efficiently.
+      </Typography>
+    </Grid>
+
+    <Grid item xs={12} md={4}>
+      <Typography variant="h6" component="h3" gutterBottom>
+        Powered by Llama 3.1
+      </Typography>
+      <Typography>
+        Our system is built using the latest Llama 3.1 AI model, ensuring that the flashcards are accurate 
+        and provide detailed information for in-depth learning.
+      </Typography>
+    </Grid>
+  </Grid>
+</Box>
 
         </>
       )}
