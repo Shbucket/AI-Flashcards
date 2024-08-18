@@ -150,12 +150,7 @@ export default function Flashcard() {
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
-<<<<<<< HEAD
               <Typography variant="h6">AI Flashcards</Typography>
-=======
-
-              <Typography variant="h6">Flashcard SaaS</Typography>
->>>>>>> f482465e0962ea90073c05b62d503d92e9922867
             </Link>
           </Box>
           <SignedOut>
