@@ -37,7 +37,9 @@ export default function Home() {
           router.push("/generate");
         } else {
           console.error("Failed to create or verify user document");
-          alert("Failed to create or verify your account. Please try again later.");
+          alert(
+            "Failed to create or verify your account. Please try again later."
+          );
         }
       } catch (error) {
         console.error("Error in handleGetStarted:", error);
