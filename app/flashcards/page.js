@@ -44,13 +44,18 @@ export default function Flashcard() {
         const userDocSnap = await getDoc(userDocRef);
 
         if (userDocSnap.exists()) {
-          const flashcardSetsData = userDocSnap.data().flashcardSets || [];
+          const flashcardSetsData = userDocSnap.data().flashcardSets || []; // Get flashcard sets from user data
+          console.log("Flashcard sets data:", flashcardSetsData);
+
+          // Convert the object to an array of set names
           const flashcardSetsArray = Object.values(flashcardSetsData).map(
             (set) => set.name
           );
-          setFlashcardSets(flashcardSetsArray);
+          console.log("Flashcard sets names:", flashcardSetsArray);
+
+          setFlashcardSets(flashcardSetsArray); // Update state with the array of set names
         } else {
-          console.log("No user document found.");
+          console.log("No user document found."); // Log if user document does not exist
         }
       } catch (error) {
         console.error("Error fetching flashcard sets:", error);
@@ -85,6 +90,7 @@ export default function Flashcard() {
               "Expected flashcards field to be an array:",
               flashcardsData
             );
+
           }
         } else {
           console.warn("No document found for set:", selectedSet);
@@ -144,7 +150,12 @@ export default function Flashcard() {
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
+<<<<<<< HEAD
               <Typography variant="h6">AI Flashcards</Typography>
+=======
+
+              <Typography variant="h6">Flashcard SaaS</Typography>
+>>>>>>> f482465e0962ea90073c05b62d503d92e9922867
             </Link>
           </Box>
           <SignedOut>
