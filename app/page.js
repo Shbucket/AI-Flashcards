@@ -66,7 +66,7 @@ export default function Home() {
       color: '#fff', // White text for dark backgrounds
     }}>
       <Head>
-        <title>Flashcard SaaS</title>
+        <title>AI Flashcards</title>
         <meta name="description" content="Create flashcards from your text" />
       </Head>
 
@@ -75,7 +75,7 @@ export default function Home() {
           <Box sx={{ flexGrow: 1 }}>
             <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
               <Typography variant="h6">
-                Flashcard SaaS
+                AI Flashcards
               </Typography>
             </Link>
           </Box>
@@ -96,7 +96,7 @@ export default function Home() {
       </AppBar>
 
       <Box sx={{ textAlign: 'center', my: 4, py: 10 }}>
-        <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold',
+        <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'comic-sans',
                     animation: 'fadeInUp 0.6s ease-out forwards',
                     '@keyframes fadeInUp': {
                       '0%': {
@@ -109,7 +109,7 @@ export default function Home() {
                       },
                     },  
          }}>
-          Welcome to Flashcard SaaS
+          Welcome to AI Flashcards
         </Typography>
         <Typography variant="h5" component="h2" gutterBottom sx={{ maxWidth: '600px', margin: '0 auto',
                     animation: 'fadeInUp 0.6s ease-out forwards',
