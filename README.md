@@ -34,3 +34,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+Also to get it running on local machine follow these steps: to get it working on another machine 1. fork it and then specifically cd into "C:\Users\(Your PC Username here)\Downloads" and then git clone it. then npm install in the AI-FlashCards file, then get a clerk key, copy the api key (or whatever code they give u on the clerk dashboard) into a newly made .env.local file, then cd into app folder then npm run dev 
+
