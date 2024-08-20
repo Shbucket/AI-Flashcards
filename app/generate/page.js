@@ -129,7 +129,7 @@ export default function Generate() {
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Typography variant="h6">Flashcard SaaS</Typography>
+              <Typography variant="h6">AI Flashcards</Typography>
             </Link>
           </Box>
           <SignedOut>

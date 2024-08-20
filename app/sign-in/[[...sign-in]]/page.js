@@ -22,16 +22,11 @@ import Link from "next/link";
 export default function SignUpPage() {
   return (
     <Container>
-      <AppBar position="static" sx={{ backgroundColor: "#3f51b5" }}>
+      <AppBar position="static" sx={{ backgroundColor: "#6A1B9A" }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Flashcard SaaS
+            AI Flashcards
           </Typography>
-          <Button color="inherit">
-            <Link href="/login" passHref>
-              Login
-            </Link>
-          </Button>
         </Toolbar>
       </AppBar>
 

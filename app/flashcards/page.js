@@ -145,13 +145,12 @@ export default function Flashcard() {
     >
       <AppBar
         position="static"
-        sx={{ backgroundColor: '#6A1B9A', boxShadow: 'none' }} // Updated to match purple theme
+        sx={{ backgroundColor: 'transparent', boxShadow: 'none' }} // Updated to match purple theme
       >
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link href="/" passHref style={{ textDecoration: 'none', color: 'inherit' }}>
-
-              <Typography variant="h6">Flashcard SaaS</Typography>
+              <Typography variant="h6">AI Flashcards</Typography>
             </Link>
           </Box>
           <SignedOut>
