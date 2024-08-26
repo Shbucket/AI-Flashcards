@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Container,
   TextField,
@@ -34,7 +34,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function Generate() {
   const { user } = useUser();
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [flashcards, setFlashcards] = useState([]);
   const [setName, setSetName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,19 +45,19 @@ export default function Generate() {
 
   const handleSubmit = async () => {
     if (!text.trim()) {
-      alert("Please enter some text to generate flashcards.");
+      alert('Please enter some text to generate flashcards.');
       return;
     }
     setLoading(true); 
 
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
+      const response = await fetch('/api/generate', {
+        method: 'POST',
         body: text,
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate flashcards");
+        throw new Error('Failed to generate flashcards');
       }
 
       const data = await response.json();
@@ -71,7 +71,7 @@ export default function Generate() {
   };
 
   const createUserDocument = async (userId) => {
-    const userDocRef = doc(db, "users", userId);
+    const userDocRef = doc(db, 'users', userId);
     const userDocSnap = await getDoc(userDocRef);
 
     if (!userDocSnap.exists()) {
@@ -81,32 +81,26 @@ export default function Generate() {
 
   const saveFlashcards = async () => {
     if (!setName.trim()) {
-      alert("Please enter a name for your flashcard set.");
+      alert('Please enter a name for your flashcard set.');
       return;
     }
     
     const userId = user.id;
 
     try {
-      // Ensure the user document exists
       await createUserDocument(userId);
 
-      // Create a document in the flashcardSets collection
-      const setDocRef = doc(db, "flashcardSets", setName);
+      const setDocRef = doc(db, 'flashcardSets', setName);
       await setDoc(setDocRef, { flashcards, userId });
 
-      // Update user document with the new flashcard set
-      const userDocRef = doc(db, "users", userId);
+      const userDocRef = doc(db, 'users', userId);
       const userDocSnap = await getDoc(userDocRef);
 
       const batch = writeBatch(db);
 
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
-        const updatedSets = [
-          ...(userData.flashcardSets || []),
-          { name: setName },
-        ];
+        const updatedSets = [...(userData.flashcardSets || []), { name: setName }];
         batch.update(userDocRef, { flashcardSets: updatedSets });
       } else {
         batch.set(userDocRef, { flashcardSets: [{ name: setName }] });
@@ -114,13 +108,13 @@ export default function Generate() {
 
       await batch.commit();
 
-      alert("Flashcards saved successfully!");
+      alert('Flashcards saved successfully!');
       handleCloseDialog();
-      router.push("/flashcards");
-      setSetName("");
+      router.push('/flashcards');
+      setSetName('');
     } catch (error) {
-      console.error("Error saving flashcards:", error);
-      alert("An error occurred while saving flashcards. Please try again.");
+      console.error('Error saving flashcards:', error);
+      alert('An error occurred while saving flashcards. Please try again.');
     }
   };
 
@@ -174,19 +168,41 @@ export default function Generate() {
         </Button>
       </Box>
 
-      {flashcards.length > 0 && ( //creates grid of cards representing the flashcards front & back
+      {flashcards.length > 0 && (
         <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom>
+          <Typography variant="h5" component="h2" gutterBottom
+                  sx={{
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
+          >
             Generated Flashcards
           </Typography>
           <Grid container spacing={2}>
             {flashcards.map((flashcard, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card sx={{
-                    p: 3,
-                    backgroundColor: "#FBF9FF",
-                    borderRadius: "12px",
-                  }}>
+                <Card sx={{ backgroundColor: '#fff', borderRadius: 2,
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                 }}>
                   <CardContent>
                     <Typography variant="h6">Front:</Typography>
                     <Typography>{flashcard.front}</Typography>
@@ -208,11 +224,6 @@ export default function Generate() {
             variant="contained"
             color="primary"
             onClick={handleOpenDialog}
-            sx={{ mt: 2, mr: 2, backgroundColor:"#000807",
-              '&:hover':{
-                backgroundColor:"#A2A3BB",
-                color:'black'
-              } }}
           >
             Save Flashcards
           </Button>
@@ -220,11 +231,39 @@ export default function Generate() {
       )}
 
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>Save Flashcard Set</DialogTitle>
+        <DialogTitle
+                  sx={{ p: 3,
+                    backgroundColor: "#FBF9FF",
+                    borderRadius: "12px",
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
+        >Save Flashcard Set</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter a name for your flashcard set.
-          </DialogContentText>
+          <DialogContentText
+                  sx={{
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
+          >Please enter a name for your flashcard set.</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -237,7 +276,7 @@ export default function Generate() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={saveFlashcards} color="primary">
+          <Button onClick={saveFlashcards} color="secondary">
             Save
           </Button>
         </DialogActions>

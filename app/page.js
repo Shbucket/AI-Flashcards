@@ -1,5 +1,8 @@
+//Home Page
 "use client";
 
+
+import React from 'react';
 import {
   AppBar,
   Container,
@@ -15,6 +18,8 @@ import Head from "next/head";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Link from "next/link"; // Import Link component
+
+
 export default function Home() {
   const { user } = useUser();
   const router = useRouter();
@@ -117,17 +122,51 @@ export default function Home() {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ textAlign: "center", my: 4, fontWeight: "bold", color: "#000807" }}>
-        <Typography variant="h2" component="h1" gutterBottom>
+      <Box sx={{ textAlign: 'center', my: 4, py: 10, fontWeight: "bold", color: "#000807" }}>
+        <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold',
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },  
+         }}>
           Welcome to StudyWise
         </Typography>
-        <Typography variant="h5" component="h2" gutterBottom>
+        <Typography variant="h5" component="h2" gutterBottom sx={{ maxWidth: '600px', margin: '0 auto',
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+         }}>
           The easiest way to create flashcards from your text.
         </Typography>
           <Box sx={{ my: 4 }}>
             <Button
               variant="contained"
-              sx={{ mt: 2, mr: 2, backgroundColor:"#000807",
+              sx={{ mt: 2, mr: 2, backgroundColor:"#000807",animation: 'fadeInUp 0.6s ease-out forwards',
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(20px)',
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                  },
+                },
                 '&:hover':{
                   backgroundColor:"#A2A3BB",
                   color:'black'
@@ -139,6 +178,17 @@ export default function Home() {
             <Button
               variant="contained"
               sx={{ mt: 2, backgroundColor:"#000807",
+                animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
                 '&:hover':{
                   backgroundColor:"#A2A3BB",
                   color:'black'
@@ -151,7 +201,6 @@ export default function Home() {
           </Box>
       </Box>
 
-      {/* Remove the Features and Pricing sections for signed-in users */}
       {!user && (
         <>
           <Box sx={{ my: 6 }}>
@@ -163,7 +212,17 @@ export default function Home() {
                 display: "flex",
                 justifyContent: "center",
                 color: "#000807",
-                fontWeight: "bold",
+                fontWeight: "bold",animation: 'fadeInUp 0.6s ease-out forwards',
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'translateY(20px)',
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                  },
+                },
               }}
             >
               Features
@@ -176,8 +235,19 @@ export default function Home() {
                   sx={{
                     p: 3,
                     backgroundColor: "#FBF9FF",
-                    borderRadius: "12px",
+                    borderRadius: "12px",animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
                   }}
+              
                 >
                   <Typography variant="h6" component="h3" gutterBottom>
                     Generative AI Flashcards
@@ -197,6 +267,7 @@ export default function Home() {
                     p: 3,
                     backgroundColor: "#FBF9FF",
                     borderRadius: "12px",
+
                   }}
                 >
                   <Typography variant="h6" component="h3" gutterBottom>
@@ -217,7 +288,19 @@ export default function Home() {
                     p: 3,
                     backgroundColor: "#FBF9FF",
                     borderRadius: "12px",
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
                   }}
+                  
                 >
                   <Typography variant="h6" component="h3" gutterBottom>
                     Powered by Llama 3.1

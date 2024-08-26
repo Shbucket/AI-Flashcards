@@ -1,3 +1,5 @@
+//Page of regenerated/saved flashcards from the firebase database
+
 "use client";
 
 import {
@@ -19,27 +21,27 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import Link from "next/link";
+
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [flashcardSets, setFlashcardSets] = useState([]); // State for storing flashcard sets
-  const [selectedSet, setSelectedSet] = useState(null); // State for storing the selected flashcard set
-  const [flashcards, setFlashcards] = useState([]); // State for storing flashcards of the selected set
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [error, setError] = useState(null); // State for error messages
-  const [flipped, setFlipped] = useState({}); // State for tracking flipped flashcards
+  const [flashcardSets, setFlashcardSets] = useState([]);
+  const [selectedSet, setSelectedSet] = useState(null);
+  const [flashcards, setFlashcards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [flipped, setFlipped] = useState({});
   const router = useRouter();
   const searchParams = useSearchParams();
   const search = searchParams.get("id");
 
-  // Fetches the user's flashcard sets from Firestore
   useEffect(() => {
     async function getFlashcardSets() {
-      if (!user) return; // Exit if user is not available
+      if (!user) return;
 
       try {
-        setLoading(true); // Set loading to true while fetching
-        const userDocRef = doc(db, "users", user.id); // Reference to the user's document
-        const userDocSnap = await getDoc(userDocRef); // Get the document snapshot
+        setLoading(true);
+        const userDocRef = doc(db, "users", user.id);
+        const userDocSnap = await getDoc(userDocRef);
 
         if (userDocSnap.exists()) {
           const flashcardSetsData = userDocSnap.data().flashcardSets || []; // Get flashcard sets from user data
@@ -57,71 +59,69 @@ export default function Flashcard() {
         }
       } catch (error) {
         console.error("Error fetching flashcard sets:", error);
-        setError("Failed to fetch flashcard sets. Please try again later."); // Set error message if fetching fails
+        setError(
+          "Failed to fetch flashcard sets. Please try again later."
+        );
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     }
 
     if (isLoaded && isSignedIn) {
-      getFlashcardSets(); // Fetch flashcard sets if user is signed in and loaded
+      getFlashcardSets();
     }
   }, [user, isLoaded, isSignedIn]);
 
-  // Fetches flashcards for the selected set
   useEffect(() => {
     async function getFlashcardsForSet() {
-      if (!selectedSet) return; // Exit if no set is selected
+      if (!selectedSet) return;
 
       try {
-        setLoading(true); // Set loading to true while fetching
-        const docRef = doc(db, "flashcardSets", selectedSet); // Reference to the flashcard set document
-        const docSnap = await getDoc(docRef); // Get the document snapshot
+        setLoading(true);
+        const docRef = doc(db, "flashcardSets", selectedSet);
+        const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          const flashcardsData = docSnap.data().flashcards || []; // Get flashcards from the document
-          console.log("Flashcards data for set:", selectedSet, flashcardsData);
-
-          // Ensure flashcardsData is an array
+          const flashcardsData = docSnap.data().flashcards || [];
           if (Array.isArray(flashcardsData)) {
-            setFlashcards(flashcardsData); // Update state with the flashcards
+            setFlashcards(flashcardsData);
           } else {
             console.warn(
               "Expected flashcards field to be an array:",
               flashcardsData
-            ); // Warn if data is not an array
+            );
+
           }
         } else {
-          console.warn("No document found for set:", selectedSet); // Warn if document does not exist
+          console.warn("No document found for set:", selectedSet);
         }
       } catch (error) {
         console.error("Error fetching flashcards for set:", error);
-        setError("Failed to fetch flashcards. Please try again later."); // Set error message if fetching fails
+        setError(
+          "Failed to fetch flashcards. Please try again later."
+        );
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     }
 
-    getFlashcardsForSet(); // Fetch flashcards when a set is selected
+    getFlashcardsForSet();
   }, [selectedSet]);
 
-  // Toggles the flip state of a flashcard when clicked
   const handleCardClick = (index) => {
     setFlipped((prev) => ({
       ...prev,
-      [index]: !prev[index], // Toggle the flip state for the specific card index
+      [index]: !prev[index],
     }));
   };
 
-  // Handles the click on a flashcard set to select it
   const handleSetClick = (setName) => {
-    setSelectedSet(setName); // Set the selected set name
+    setSelectedSet(setName);
   };
 
-  // Handles the back button click to go back to the list of flashcard sets
   const handleBackClick = () => {
-    setSelectedSet(null); // Clear the selected set
-    setFlashcards([]); // Clear the flashcards
+    setSelectedSet(null);
+    setFlashcards([]);
   };
 
   // Display loading or error messages
@@ -167,6 +167,17 @@ export default function Flashcard() {
             variant="contained"
             color="primary"
             sx={{ mt: 2, mr: 2, backgroundColor:"#000807",
+              animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
               '&:hover':{
                 backgroundColor:"#A2A3BB",
                 color:'black'
@@ -180,14 +191,25 @@ export default function Flashcard() {
               flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card
-                    onClick={() => handleCardClick(index)} // Use index as the identifier for the card
+                    onClick={() => handleCardClick(index)}
                     sx={{
-                      p: 3,
-                    backgroundColor: "#FBF9FF",
-                    borderRadius: "12px",
                       position: "relative",
                       perspective: "1000px",
                       cursor: "pointer",
+                      p: 3,
+                    backgroundColor: "#FBF9FF",
+                    borderRadius: "12px",
+                      animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
                     }}
                   >
                     <Box
@@ -199,8 +221,8 @@ export default function Flashcard() {
                         transition: "0.6s",
                         transformStyle: "preserve-3d",
                         transform: flipped[index]
-                          ? "rotateY(180deg)"
-                          : "rotateY(0deg)", // Rotate card based on flip state
+                          ? 'rotateY(180deg)'
+                          : 'rotateY(0deg)',
                       }}
                     >
                       <Box
@@ -220,7 +242,7 @@ export default function Flashcard() {
                         }}
                       >
                         <Typography variant="h5" component="div">
-                          {flashcard.front} {/* Front side of the flashcard */}
+                          {flashcard.front}
                         </Typography>
                       </Box>
                       <Box
@@ -241,7 +263,7 @@ export default function Flashcard() {
                         }}
                       >
                         <Typography variant="h5" component="div">
-                          {flashcard.back} {/* Back side of the flashcard */}
+                          {flashcard.back}
                         </Typography>
                       </Box>
                     </Box>
@@ -251,7 +273,7 @@ export default function Flashcard() {
             ) : (
               <Typography
                 variant="h6"
-                sx={{ mt: 4, display: "flex", justifyContent: "center" }}
+                sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}
               >
                 No flashcards found in this set.
               </Typography>
@@ -263,11 +285,25 @@ export default function Flashcard() {
           {flashcardSets.length > 0 ? (
             flashcardSets.map((setName) => (
               <Grid item xs={12} sm={6} md={4} key={setName}>
-                <Card sx={{borderRadius:"12px"}}>
+                <Card
+                  sx={{borderRadius:"12px",
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
+                >
                   <CardActionArea onClick={() => handleSetClick(setName)}>
                     <CardContent>
                       <Typography variant="h5" component="div">
-                        {setName} {/* Display the name of the flashcard set */}
+                        {setName}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
@@ -277,7 +313,19 @@ export default function Flashcard() {
           ) : (
             <Typography
               variant="h6"
-              sx={{ mt: 4, display: "flex", justifyContent: "center" }}
+              sx={{ mt: 4, color: 'white', display: 'flex', justifyContent: 'center',  padding: '30px',
+                animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+               }}
             >
               No flashcard sets found. Create a new flashcard set.
             </Typography>
