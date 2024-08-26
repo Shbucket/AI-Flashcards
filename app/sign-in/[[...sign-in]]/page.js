@@ -19,17 +19,12 @@ import Link from "next/link";
 
 export default function SignUpPage() {
   return (
-    <Container>
-      <AppBar position="static" sx={{ backgroundColor: "#3f51b5" }}>
+    <Container maxWidth="100vw" sx={{ backgroundColor: "#9395D3", minHeight: "100vh", py: 4 }} >
+      <AppBar position="static" sx={{  backgroundColor: "#B3B7EE", borderRadius:"8px" }}>
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Flashcard SaaS
+          <Typography variant="h6" sx={{ flexGrow: 1,fontWeight:"bold" }}>
+          StudyWise
           </Typography>
-          <Button color="inherit">
-            <Link href="/login" passHref>
-              Login
-            </Link>
-          </Button>
         </Toolbar>
       </AppBar>
 
@@ -40,7 +35,7 @@ export default function SignUpPage() {
         alignItems="center"
         sx={{ textAlign: "center", my: 4 }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: "bold", color: "#FFF" }}>
           Sign In
         </Typography>
         <SignedOut>

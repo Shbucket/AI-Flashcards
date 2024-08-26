@@ -125,17 +125,15 @@ export default function Flashcard() {
   };
 
   // Display loading or error messages
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   if (error) {
     return <div>{error}</div>;
   }
 
   return (
-    <Container maxWidth="md">
-      <AppBar position="static">
+    <Container maxWidth="100vw"
+    sx={{ backgroundColor: "#9395D3", minHeight: "100vh", py: 4 }}>
+      <AppBar position="static"  sx={{ backgroundColor: "#B3B7EE", borderRadius:"8px" }}>
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link
@@ -143,7 +141,9 @@ export default function Flashcard() {
               passHref
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <Typography variant="h6">Flashcard SaaS</Typography>
+              <Typography variant="h6" sx={{ fontWeight: "bold", color: "#FFF" }}>
+                StudyWise
+              </Typography>
             </Link>
           </Box>
           <SignedOut>
@@ -164,9 +164,13 @@ export default function Flashcard() {
         <>
           <Button
             onClick={handleBackClick}
-            variant="outlined"
+            variant="contained"
             color="primary"
-            sx={{ mt: 4 }}
+            sx={{ mt: 2, mr: 2, backgroundColor:"#000807",
+              '&:hover':{
+                backgroundColor:"#A2A3BB",
+                color:'black'
+              } }}
           >
             Back to Sets
           </Button>
@@ -178,6 +182,9 @@ export default function Flashcard() {
                   <Card
                     onClick={() => handleCardClick(index)} // Use index as the identifier for the card
                     sx={{
+                      p: 3,
+                    backgroundColor: "#FBF9FF",
+                    borderRadius: "12px",
                       position: "relative",
                       perspective: "1000px",
                       cursor: "pointer",
@@ -185,6 +192,7 @@ export default function Flashcard() {
                   >
                     <Box
                       sx={{
+                       
                         position: "relative",
                         width: "100%",
                         height: "200px",
@@ -197,6 +205,7 @@ export default function Flashcard() {
                     >
                       <Box
                         sx={{
+                        
                           position: "absolute",
                           width: "100%",
                           height: "100%",
@@ -216,6 +225,7 @@ export default function Flashcard() {
                       </Box>
                       <Box
                         sx={{
+                          p:1,
                           position: "absolute",
                           width: "100%",
                           height: "100%",
@@ -253,7 +263,7 @@ export default function Flashcard() {
           {flashcardSets.length > 0 ? (
             flashcardSets.map((setName) => (
               <Grid item xs={12} sm={6} md={4} key={setName}>
-                <Card>
+                <Card sx={{borderRadius:"12px"}}>
                   <CardActionArea onClick={() => handleSetClick(setName)}>
                     <CardContent>
                       <Typography variant="h5" component="div">

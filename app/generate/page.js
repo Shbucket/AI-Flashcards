@@ -19,6 +19,7 @@ import {
   Toolbar,
   DialogTitle,
   DialogContentText,
+  CircularProgress
 } from "@mui/material";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import {
@@ -36,6 +37,7 @@ export default function Generate() {
   const [text, setText] = useState("");
   const [flashcards, setFlashcards] = useState([]);
   const [setName, setSetName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
   const handleOpenDialog = () => setDialogOpen(true);
@@ -46,6 +48,7 @@ export default function Generate() {
       alert("Please enter some text to generate flashcards.");
       return;
     }
+    setLoading(true); 
 
     try {
       const response = await fetch("/api/generate", {
@@ -62,6 +65,8 @@ export default function Generate() {
     } catch (error) {
       console.error("Error generating flashcards:", error);
       alert("An error occurred while generating flashcards. Please try again.");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -79,11 +84,7 @@ export default function Generate() {
       alert("Please enter a name for your flashcard set.");
       return;
     }
-    if (!user) {
-      alert("You must be logged in to save flashcards.");
-      return;
-    }
-
+    
     const userId = user.id;
 
     try {
@@ -124,8 +125,9 @@ export default function Generate() {
   };
 
   return (
-    <Container maxWidth="md">
-      <AppBar position="static">
+    <Container maxWidth="100vw"
+    sx={{ backgroundColor: "#9395D3", minHeight: "100vh", py: 4 }}>
+      <AppBar position="static" sx={{ backgroundColor: "#B3B7EE", borderRadius:"8px" }}>
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Link
@@ -133,17 +135,9 @@ export default function Generate() {
               passHref
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <Typography variant="h6">Flashcard SaaS</Typography>
+              <Typography variant="h6"  sx={{ fontWeight: "bold", color: "#FFF" }}>StudyWise</Typography>
             </Link>
           </Box>
-          <SignedOut>
-            <Button color="inherit" href="/sign-in">
-              Login
-            </Button>
-            <Button color="inherit" href="/sign-in">
-              Sign Up
-            </Button>
-          </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>
@@ -151,26 +145,32 @@ export default function Generate() {
       </AppBar>
 
       <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: "bold", color: "000807" }}>
           Generate Flashcards
         </Typography>
         <TextField
           value={text}
           onChange={(e) => setText(e.target.value)}
-          label="Enter text"
+          label="What is your desire topic?"
           fullWidth
           multiline
           rows={4}
-          variant="outlined"
-          sx={{ mb: 2 }}
+          variant="filled"
+          sx={{ mb: 2, backgroundColor:'#fff',borderRadius:"12px"
+          }}
         />
         <Button
           variant="contained"
-          color="primary"
+          sx={{ mt: 2, mr: 2, backgroundColor:"#000807", borderRadius:"12px", p:2, fontWeight:"bold",
+            '&:hover':{
+              backgroundColor:"#A2A3BB",
+              color:'black'
+            } }}
           onClick={handleSubmit}
           fullWidth
+          disabled={loading}
         >
-          Generate Flashcards
+          {loading ? <CircularProgress size={24} /> : "Generate Flashcards"}
         </Button>
       </Box>
 
@@ -182,7 +182,11 @@ export default function Generate() {
           <Grid container spacing={2}>
             {flashcards.map((flashcard, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card>
+                <Card sx={{
+                    p: 3,
+                    backgroundColor: "#FBF9FF",
+                    borderRadius: "12px",
+                  }}>
                   <CardContent>
                     <Typography variant="h6">Front:</Typography>
                     <Typography>{flashcard.front}</Typography>
@@ -204,6 +208,11 @@ export default function Generate() {
             variant="contained"
             color="primary"
             onClick={handleOpenDialog}
+            sx={{ mt: 2, mr: 2, backgroundColor:"#000807",
+              '&:hover':{
+                backgroundColor:"#A2A3BB",
+                color:'black'
+              } }}
           >
             Save Flashcards
           </Button>
