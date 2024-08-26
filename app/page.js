@@ -201,8 +201,6 @@ export default function Home() {
           </Box>
       </Box>
 
-      {!user && (
-        <>
           <Box sx={{ my: 6 }}>
             <Typography
               variant="h4"
@@ -267,6 +265,17 @@ export default function Home() {
                     p: 3,
                     backgroundColor: "#FBF9FF",
                     borderRadius: "12px",
+                    animation: 'fadeInUp 0.6s ease-out forwards',
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
 
                   }}
                 >
@@ -314,8 +323,7 @@ export default function Home() {
               </Grid>
             </Grid>
           </Box>
-        </>
-      )}
+    
     </Container>
   );
 }
