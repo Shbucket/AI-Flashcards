@@ -36,6 +36,7 @@ export default function Generate() {
   const { user } = useUser();
   const [text, setText] = useState("");
   const [flashcards, setFlashcards] = useState([]);
+  const [numFlashcards, setNumFlashcards] = useState(10);
   const [setName, setSetName] = useState("");
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -53,7 +54,10 @@ export default function Generate() {
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
-        body: text,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text, numFlashcards }),
       });
 
       if (!response.ok) {
@@ -148,17 +152,33 @@ export default function Generate() {
         <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: "bold", color: "000807" }}>
           Generate Flashcards
         </Typography>
-        <TextField
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          label="What is your desire topic?"
-          fullWidth
-          multiline
-          rows={4}
-          variant="filled"
-          sx={{ mb: 2, backgroundColor:'#fff',borderRadius:"12px"
-          }}
-        />
+        <Box sx={{ mb: 2, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }} >
+  <TextField
+    value={text}
+    onChange={(e) => setText(e.target.value)}
+    label="What is your desired topic?"
+    fullWidth
+    multiline
+    rows={4}
+    variant="filled"
+    sx={{ backgroundColor: '#fff', borderRadius: "12px", flex: '0 1 80%',height: '100%'  }} // 80% width
+  />
+  <TextField
+    label="Number of Flashcards"
+    type="number"
+    value={numFlashcards}
+    onChange={(e) => setNumFlashcards(e.target.value)}
+    inputProps={{ min: 1, max: 100 }}
+    sx={{ backgroundColor: '#fff', borderRadius: "12px", flex: '0 1 20%', height: '100%'  }} // 20% width
+    InputLabelProps={{
+      style: {
+        color: '#000',
+        fontSize: '1.6rem',
+        fontWeight: 'bold',
+      },
+    }}
+  />
+</Box>
         <Button
           variant="contained"
           sx={{ mt: 2, mr: 2, backgroundColor:"#000807", borderRadius:"12px", p:2, fontWeight:"bold",

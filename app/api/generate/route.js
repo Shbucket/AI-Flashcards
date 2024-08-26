@@ -1,39 +1,38 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const systemPrompt = `
-You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
-Both front and back should be one sentence long.
-You should return in the following JSON format:
-{
-  "flashcards":[
-    {
-      "front": "Front of the card",
-      "back": "Back of the card"
-    }
-  ]
-}
-`;
-
 export async function POST(req) {
   const openai = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
-    apiKey: `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`,
+    apiKey: process.env.OPENAI_API_KEY,
   });
-  const data = await req.text();
+
+  const { text, numFlashcards } = await req.json();
+
+  const systemPrompt = `
+    You are a flashcard creator. Take in text and create exactly ${numFlashcards} flashcards.
+    Each flashcard should have a front and back, with one sentence each.
+    Format your response as JSON:
+    {
+      "flashcards": [
+        {
+          "front": "Front of the card",
+          "back": "Back of the card"
+        }
+      ]
+    }
+  `;
 
   const completion = await openai.chat.completions.create({
     messages: [
       { role: "system", content: systemPrompt },
-      { role: "user", content: data },
+      { role: "user", content: text },
     ],
     model: "openai/gpt-3.5-turbo",
     response_format: { type: "json_object" },
   });
 
-  // Parse the JSON response from the OpenAI API
   const flashcards = JSON.parse(completion.choices[0].message.content);
 
-  // Return the flashcards as a JSON response
   return NextResponse.json(flashcards.flashcards);
 }
